@@ -10,7 +10,7 @@ if len(sys.argv)<2:
 #grabs the image name from command line
 pickimg = sys.argv[1]
 #cv2 reads the image to be able to show 
-img = cv2.imread(pickimg,cv2.IMREAD_COLOR)
+img = cv2.imread(pickimg)
 #turns image gray for hough
 gray_scale = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 
@@ -30,7 +30,7 @@ def hough_transform(image):
     #range for my radius
     r_min = 0
     r_max = 50
-    #creats array thta turns degrees from 0 to 360 into radians and stores it
+    #creates array thta turns degrees from 0 to 360 into radians and stores it
     thetas = np.deg2rad(np.arange(0,180))
     #cos stores the x coordinate and sin stores the y coordinate as separate arrays
     cos_t = np.cos(thetas)
@@ -44,7 +44,7 @@ def hough_transform(image):
     for x,y,v in int_coordinates:
         #loops with radius range from 0-50
         for r in range(r_min,r_max+1):
-            #loops through thetas fro my sin and cos from 0 to 180 
+            #loops through thetas for my sin and cos from 0 to 180 
             for i in range(len(thetas)):
                 #gets the a and b distance of each ball
                 a = int(x-r*cos_t[i])
