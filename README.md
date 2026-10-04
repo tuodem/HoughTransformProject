@@ -8,6 +8,7 @@ This program uses an accumulator which starts out as an array of 0's and each ti
 
 In this case of my project it takes the image of a billiard table and detects each ball on the table and the spot ball as well marking it with a green ball
 
+To run this program you will need to use vs code or some IDE that uses python and allows you to use command lines in the terminal. I would recommend using Vs code as I created the program using the intergrated development environment
 To Use this program you must run the program by using a command line such as "python project1.py path/to/your/image", in this case of the program you would use "tests_new" folder to access the images and there coordinates
 to run the program
 
