@@ -1,4 +1,4 @@
-#Hough Transformation Computer Vision Project
+Hough Transformation Computer Vision Project
 
 In this program it allows user to implement a image with coordinates to find the objects by using Hough Voting.
 
