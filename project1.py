@@ -31,17 +31,22 @@ def hough_transform(image):
     r_min = 0
     r_max = 50
     #creates array thta turns degrees from 0 to 360 into radians and stores it
-    thetas = np.deg2rad(np.arange(0,180))
+    thetas = np.deg2rad(np.arange(0,360))
     #cos stores the x coordinate and sin stores the y coordinate as separate arrays
     cos_t = np.cos(thetas)
     sin_t = np.sin(thetas)
 
     #hough matrix that is filled with zeros
     h_votes = np.zeros((height,width),dtype=np.float64)
-
+    spot_x = None
+    spot_y = None
    
     #loops through coordinates
     for x,y,v in int_coordinates:
+        if v == 1:
+            spot_x = x
+            spot_y = y
+        
         #loops with radius range from 0-50
         for r in range(r_min,r_max+1):
             #loops through thetas for my sin and cos from 0 to 180 
@@ -49,31 +54,42 @@ def hough_transform(image):
                 #gets the a and b distance of each ball
                 a = int(x-r*cos_t[i])
                 b = int(y-r*sin_t[i])
+
+        
                 #compares the distance with width and height of image for boundary issues
                 if 0 <= a < width and 0 <= b < height:
                     #votings for hough transformation stored into array with b the height of image representing the rows and a the width of the image respresenting the columns
                     h_votes[b,a]+=1
-
+                        
+                        
+    #sets the max votes to compare to votes for the regions with the highest voting       
+    max_votes = np.max(h_votes)
+    #radius for how big i want the circles to be
+    radius = 25
+    #loop to go through the height and width of the image
+    for b in range(height):
+        for a in range(width):
+            #takes each vote for each region
+            votes = h_votes[b,a]
+            #checks to see if the votes are the same as the max votes which are my highest for the shape
+            if votes >= max_votes:
+                #checking for my spot ball to color it green
+                if spot_x == a and spot_y == b:
+                    color = (0,0,255)#color is red for circle
+                    thickness = 3 #how thick i want the circle to be
+                else:
+                    color = (0,255,0)#color is green for circle
+                    thickness = 2 #how thick i want the circle to be
+                    
+                cv2.circle(img,(a,b),radius,color,thickness) #draws circle around the balls
 
         
 
-#returns voting for hough and coordinates
-    return h_votes, int_coordinates
-#takes the hough matrix and coordinates for drawing the circles
-votes_matrix, coordinates = hough_transform(gray_scale)
-#set a random radius that was between 20 and 45
-radius = 25
-#loop through coordinates to draw the circles
-for x,y,v in coordinates:
-    #checks if v is 1 to see if its the spot ball
-    if v == 1:
-        color = (0,0,255) #sets color to red
-        thickness = 3 #makes the circle thicker
-    else:
-        color = (0,255,0) #sets color to green
-        thickness = 2 #setes thickness of line
-    #draws the circles for each ball
-    cv2.circle(img,(x,y),radius,color,thickness)
+
+
+#calls hough_transform function with a gray image
+hough_transform(gray_scale)
+
 
 #calls to show the image and keep it open until you exit
 cv2.imshow("Picture",img)
